@@ -3,6 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { Loop } from './loop';
 import './style.css';
+const hostPath = 'https://raw.githubusercontent.com/nkitku/learn-three/master/';
 
 const loader = new GLTFLoader();
 const scene = new THREE.Scene();
@@ -53,7 +54,7 @@ function setupModel(data) {
   return model;
 }
 
-loader.load('./assets/Parrot.glb', (gltf) => {
+loader.load(hostPath + 'assets/Parrot.glb', (gltf) => {
   const parrot = setupModel(gltf);
   scene.add(parrot);
   loop.updatables.push(parrot);
