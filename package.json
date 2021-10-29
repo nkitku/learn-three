@@ -2,6 +2,7 @@
   "name": "typescript",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@types/three": "^0.133.1",
     "three": "^0.134.0"

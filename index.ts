@@ -1,10 +1,12 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { Loop } from './loop';
 import './style.css';
 
-const basePath = (url) =>
+const wait = (x: number) => new Promise((r) => setTimeout(r, x, x));
+
+const basePath = (url: string) =>
   'https://raw.githubusercontent.com/nkitku/learn-three/master' + url;
 
 const loader = new GLTFLoader();
@@ -43,16 +45,13 @@ const controls = new OrbitControls(camera, renderer.domElement);
 camera.position.setZ(30);
 const loop = new Loop(camera, scene, renderer);
 
-function setupModel(data) {
+function setupModel(data: GLTF) {
   const model = data.scene.children[0];
   const clip = data.animations[0];
-
   const mixer = new THREE.AnimationMixer(model);
   const action = mixer.clipAction(clip);
   action.play();
-
-  model.tick = (delta) => mixer.update(delta);
-
+  // model.tick = (delta: number) => mixer.update(delta);
   return model;
 }
 
@@ -60,7 +59,7 @@ loader.load(basePath('/assets/Parrot.glb'), (gltf) => {
   const parrot = setupModel(gltf);
   scene.add(parrot);
   loop.updatables.push(parrot);
-  loop.start();
+  // loop.start();
 });
 
 function addStar() {
@@ -83,16 +82,13 @@ const imageBase = (x) =>
   x;
 
 const spaceTexture = new THREE.TextureLoader().load(imageBase('/space.jpg'));
-scene.background = spaceTexture;
 const moonTexture = new THREE.TextureLoader().load(imageBase('/moon.jpg'));
 const normalTexture = new THREE.TextureLoader().load(imageBase('/normal.jpg'));
+scene.background = spaceTexture;
 
 const moon = new THREE.Mesh(
   new THREE.SphereGeometry(3, 32, 32),
-  new THREE.MeshStandardMaterial({
-    map: moonTexture,
-    normalMap: normalTexture,
-  })
+  new THREE.MeshStandardMaterial({ map: moonTexture, normalMap: normalTexture })
 );
 
 scene.add(moon);
@@ -101,7 +97,6 @@ moon.position.z = 30;
 moon.position.setX(-10);
 
 function animate() {
-  requestAnimationFrame(animate);
   torus.rotation.x += 0.01;
   torus.rotation.y += 0.005;
   torus.rotation.z += 0.01;
@@ -109,4 +104,10 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-// animate();
+const main = async () => {
+  while (true) {
+    await wait(50);
+    animate();
+  }
+};
+main();
