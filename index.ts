@@ -78,17 +78,14 @@ function addStar() {
 
 Array(200).fill(0).forEach(addStar);
 
-const spaceTexture = new THREE.TextureLoader().load(
-  'https://raw.githubusercontent.com/fireship-io/threejs-scroll-animation-demo/main/space.jpg'
-);
-scene.background = spaceTexture;
+const imageBase = (x) =>
+  'https://raw.githubusercontent.com/fireship-io/threejs-scroll-animation-demo/main' +
+  x;
 
-const moonTexture = new THREE.TextureLoader().load(
-  'https://raw.githubusercontent.com/fireship-io/threejs-scroll-animation-demo/main/moon.jpg'
-);
-const normalTexture = new THREE.TextureLoader().load(
-  'https://raw.githubusercontent.com/fireship-io/threejs-scroll-animation-demo/main/normal.jpg'
-);
+const spaceTexture = new THREE.TextureLoader().load(imageBase('/space.jpg'));
+scene.background = spaceTexture;
+const moonTexture = new THREE.TextureLoader().load(imageBase('/moon.jpg'));
+const normalTexture = new THREE.TextureLoader().load(imageBase('/normal.jpg'));
 
 const moon = new THREE.Mesh(
   new THREE.SphereGeometry(3, 32, 32),
@@ -112,4 +109,4 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-animate();
+// animate();
